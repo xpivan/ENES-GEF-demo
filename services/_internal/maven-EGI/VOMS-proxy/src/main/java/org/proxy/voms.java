@@ -37,6 +37,10 @@ public class voms {
 	static final String keyPassword = ""; //Enter your password here
 	  
 	public static void createProxy() {
+
+		Def def = new Def();
+		JSONObject egiInput = def.getJson(configEGI);
+		String VOMS_PROXY_FILEPATH = (String) egiInput.get("proxyPath");
 		
 		try {
 		PEMCredential c = new PEMCredential(new FileInputStream("/root/.globus/userkey.pem"), new FileInputStream("/root/.globus/usercert.pem"),
@@ -74,7 +78,7 @@ public class voms {
 			  
 		ProxyCertificate proxyCert = ProxyGenerator.generate(proxyOptions, cred.getKey()); 
 		  
-		OutputStream os = new FileOutputStream("/tmp/x509up_u5040");
+		OutputStream os = new FileOutputStream(VOMS_PROXY_FILEPATH);
 		CredentialsUtils.saveProxyCredentials(os, proxyCert.getCredential());		  
 		} catch (InvalidKeyException ex) {
 			// TODO Auto-generated catch block
